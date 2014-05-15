@@ -19,5 +19,15 @@ if(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
 endif()
 
 add_subdirectory(sort)
-add_subdirectory(test)
 
+#######################
+# Unit Test Framework
+SET(BUILDNAME "${PRODUCTFULLNAME}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}-${GIT_BRANCH}")
+SET(UPDATE_TYPE "git")
+# enable unittests
+enable_testing()
+# enable CDash
+include(CTest)
+if (BUILD_TESTING)
+    add_subdirectory(test)
+endif()
