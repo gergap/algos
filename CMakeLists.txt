@@ -22,7 +22,7 @@ add_subdirectory(sort)
 
 #######################
 # Unit Test Framework
-SET(BUILDNAME "${PRODUCTFULLNAME}-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}-${GIT_BRANCH}")
+SET(BUILDNAME "calgos-${CMAKE_SYSTEM_NAME}-${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}-${GIT_BRANCH}")
 SET(UPDATE_TYPE "git")
 # enable unittests
 enable_testing()

@@ -6,8 +6,6 @@ include(unittest)
 include_directories(${CMAKE_SOURCE_DIR})
 include_directories(../testlib)
 
-add_executable(test main.c)
-target_link_libraries(test sort)
-
+set(TEST_LIBS sort)
 add_unit_test(quicksort quicksort.c)
 
