@@ -19,12 +19,10 @@
 #include <string.h> /* for memcpy */
 #include <assert.h>
 
-/** swap marcro for abitrary sized data.
- * Compilers are smart enough to replace memcpy with move calls
- * if the data fits into a register.
- */
-#define swap(a, b, size) ({char tmp[size]; memcpy(tmp, a, size); memcpy(a, b, size); memcpy(b, tmp, size);})
-
+/*#define DEBUG*/
+#ifdef DEBUG
+# include <stdio.h>
+# define DEBUGPRINT(fmt, ...) printf(fmt, ##__VA_ARGS__)
 static void printlist(int list[], size_t num)
 {
     size_t i;
@@ -35,6 +33,16 @@ static void printlist(int list[], size_t num)
     }
     printf("\n");
 }
+#else
+# define DEBUGPRINT(fmt, ...)
+# define printlist(a, b)
+#endif
+
+/** swap marcro for abitrary sized data.
+ * Compilers are smart enough to replace memcpy with move calls
+ * if the data fits into a register.
+ */
+#define swap(a, b, size) ({char tmp[size]; memcpy(tmp, a, size); memcpy(a, b, size); memcpy(b, tmp, size);})
 
 /** Quicksort algorithm.
  * Sorts an array with \c num elements of size \c size.
@@ -56,9 +64,9 @@ void quicksort(void *base, size_t num, size_t size,
     char *left = base;
     char *right = (char *)base + (num - 1) * size;
     char *pivot;
-    int index;
+    size_t index;
 
-    printf("Sorting: ");
+    DEBUGPRINT("Sorting: ");
     printlist(base, num);
 
     if (num < 2)
@@ -69,7 +77,7 @@ void quicksort(void *base, size_t num, size_t size,
         if ((*cmp)(right, left) < 0) {
             swap(left, right, size);
         }
-        printf("Sorted: ");
+        DEBUGPRINT("Sorted: ");
         printlist(base, num);
         return;
     }
@@ -85,13 +93,13 @@ void quicksort(void *base, size_t num, size_t size,
             swap(left, pivot, size);
     }
 
-    printf("Swapped: ");
+    DEBUGPRINT("Swapped: ");
     printlist(base, num);
-    printf("pivot=%i\n", *((int *)pivot));
+    DEBUGPRINT("pivot=%i\n", *((int *)pivot));
 
     if (num == 3) {
         /* choosing the pivot has already sorted these three elements */
-        printf("Sorted: ");
+        DEBUGPRINT("Sorted: ");
         printlist(base, num);
         return;
     }
@@ -105,7 +113,7 @@ void quicksort(void *base, size_t num, size_t size,
 
         if (left < right) {
             swap(left, right, size);
-            printf("Swapped: ");
+            DEBUGPRINT("Swapped: ");
             printlist(base, num);
             /* if we have swapped the pivot element we must update the pivot pointer */
             if (left == pivot)
@@ -119,7 +127,7 @@ void quicksort(void *base, size_t num, size_t size,
             break;
         }
     }
-    printf("Sorted: ");
+    DEBUGPRINT("Sorted: ");
     printlist(base, num);
 
     /* left is now right+1*size, because no value can <piv and >=piv.
@@ -132,7 +140,7 @@ void quicksort(void *base, size_t num, size_t size,
      * all values from l-(n-1) are >= p
      */
     index = (left - b) / size;
-    printf("index=%i\n", index);
+    DEBUGPRINT("index=%lu\n", index);
     assert(index > 0 && index < num);
     quicksort(b, index, size, cmp);
     quicksort(b + index * size, num - index, size, cmp);
