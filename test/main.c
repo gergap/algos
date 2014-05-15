@@ -29,14 +29,23 @@ int main(int argc, char *argv[])
     UNUSED(argc);
     UNUSED(argv);
     int list[] = { 17, 23, 1, 12, 59, 44, 103, 5, 6, 7, 8 };
+    int source[] = { 17, 23, 1, 12, 59, 44, 103, 5, 6, 7, 8 };
     size_t size = sizeof(int);
     size_t num = sizeof(list) / size;
+    size_t i;
 
     printlist(list, num);
     //qsort(list, num, size, compare);
     quicksort(list, num, size, compare_int);
     printlist(list, num);
     printf("compare was called %i times.\n", g_cnt);
+
+    // test all length variations
+    for (i=0; i<num; i++) {
+        memcpy(list, source, sizeof(list));
+        quicksort(list, i, size, compare_int);
+        printlist(list, i);
+    }
 
     return 0;
 }
