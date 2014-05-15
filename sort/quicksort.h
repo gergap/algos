@@ -22,7 +22,7 @@
 #include <stddef.h> /* for size_t */
 
 void quicksort(void *base, size_t num, size_t size,
-    int (*cmp)(const void*, const void*));
+               int (*cmp)(const void *, const void *));
 
 #endif /* end of include guard: _QUICKSORT_H_ */
 

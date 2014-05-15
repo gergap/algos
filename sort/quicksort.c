@@ -30,7 +30,7 @@ static void printlist(int list[], size_t num)
     size_t i;
 
     printf("%i", list[0]);
-    for (i=1; i<num; i++) {
+    for (i = 1; i < num; i++) {
         printf(" %i", list[i]);
     }
     printf("\n");
@@ -50,11 +50,11 @@ static void printlist(int list[], size_t num)
  * equal, their order in the sorted array is undefined.
  */
 void quicksort(void *base, size_t num, size_t size,
-    int (*cmp)(const void*, const void*))
+               int (*cmp)(const void *, const void *))
 {
     char *b = base;
     char *left = base;
-    char *right = (char*)base + (num-1)*size;
+    char *right = (char *)base + (num - 1) * size;
     char *pivot;
     int index;
 
@@ -75,7 +75,7 @@ void quicksort(void *base, size_t num, size_t size,
     }
 
     /* choose a pivot element. We choose the median of the leftmost, middle and rightmost value. */
-    pivot = b + (num/2)*size;
+    pivot = b + (num / 2) * size;
     if ((*cmp)(pivot, left) < 0)
         swap(left, pivot, size);
     if ((*cmp)(right, pivot) < 0) {
@@ -87,7 +87,7 @@ void quicksort(void *base, size_t num, size_t size,
 
     printf("Swapped: ");
     printlist(base, num);
-    printf("pivot=%i\n", *((int*)pivot));
+    printf("pivot=%i\n", *((int *)pivot));
 
     if (num == 3) {
         /* choosing the pivot has already sorted these three elements */
@@ -132,9 +132,9 @@ void quicksort(void *base, size_t num, size_t size,
      * all values from l-(n-1) are >= p
      */
     index = (left - b) / size;
-    printf("index=%i\n",index);
+    printf("index=%i\n", index);
     assert(index > 0 && index < num);
     quicksort(b, index, size, cmp);
-    quicksort(b+index*size, num-index, size, cmp);
+    quicksort(b + index * size, num - index, size, cmp);
 }
 
