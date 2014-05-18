@@ -26,6 +26,33 @@
  */
 #define swap(a, b, size) ({char tmp[size]; memcpy(tmp, a, size); memcpy(a, b, size); memcpy(b, tmp, size);})
 
+/* for heapsort we use a heap which is implemented as an array.
+ * the left child, right child and parent indeces in one based arrays are computed
+ * this way.
+ * left(i) = 2i
+ * right(i) = 2i+1
+ * parent(i) = i/2
+ * Because in C we use zero based arrays we must slightly modfiy these formulas to:
+ * left(i) = 2i+1
+ * right(i) = 2i+2
+ * parent(i) = (i+1)/2
+ */
+
+static int left(int i)
+{
+    return 2 * i + 1;
+}
+
+static int right(int i)
+{
+    return 2 * i + 2;
+}
+
+static int parent(int i)
+{
+    return (i + 1) / 2;
+}
+
 void heapsort(void *base, size_t num, size_t size,
               int (*cmp)(const void *, const void *))
 {
