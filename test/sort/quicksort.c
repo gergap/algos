@@ -30,7 +30,9 @@ static int compare_int(const void *a, const void *b)
 {
     const int *ia = a;
     const int *ib = b;
-    return ((*ia)-(*ib));
+    if (*ia < *ib) return -1;
+    if (*ia > *ib) return 1;
+    return 0;
 }
 
 /* simple test */

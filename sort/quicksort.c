@@ -43,7 +43,7 @@ static void printlist(int list[], size_t num)
  * Compilers are smart enough to replace memcpy with move calls
  * if the data fits into a register.
  */
-#define swap(a, b, size) ({char tmp[size]; memcpy(tmp, a, size); memcpy(a, b, size); memcpy(b, tmp, size);})
+#define SWAP(a, b, size) ({char tmp[size]; memcpy(tmp, a, size); memcpy(a, b, size); memcpy(b, tmp, size);})
 
 /** Quicksort algorithm.
  * Sorts an array with \c num elements of size \c size.
@@ -76,7 +76,7 @@ void quicksort(void *base, size_t num, size_t size,
     if (num == 2) {
         /* just swap the elements if necessary */
         if ((*cmp)(right, left) < 0) {
-            swap(left, right, size);
+            SWAP(left, right, size);
         }
         DEBUGPRINT("Sorted: ");
         printlist(base, num);
@@ -86,12 +86,12 @@ void quicksort(void *base, size_t num, size_t size,
     /* choose a pivot element. We choose the median of the leftmost, middle and rightmost value. */
     pivot = b + (num / 2) * size;
     if ((*cmp)(pivot, left) < 0)
-        swap(left, pivot, size);
+        SWAP(left, pivot, size);
     if ((*cmp)(right, pivot) < 0) {
-        swap(pivot, right, size);
+        SWAP(pivot, right, size);
         /* we need to check again if now left is smaller than the middle value. */
         if ((*cmp)(pivot, left) < 0)
-            swap(left, pivot, size);
+            SWAP(left, pivot, size);
     }
 
     DEBUGPRINT("Swapped: ");
@@ -113,7 +113,7 @@ void quicksort(void *base, size_t num, size_t size,
             right -= size;
 
         if (left < right) {
-            swap(left, right, size);
+            SWAP(left, right, size);
             DEBUGPRINT("Swapped: ");
             printlist(base, num);
             /* if we have swapped the pivot element we must update the pivot pointer */

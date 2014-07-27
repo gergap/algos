@@ -24,10 +24,10 @@
  * Compilers are smart enough to replace memcpy with move calls
  * if the data fits into a register.
  */
-#define swap(a, b, size) ({char tmp[size]; memcpy(tmp, a, size); memcpy(a, b, size); memcpy(b, tmp, size);})
+#define SWAP(a, b, size) ({char tmp[size]; memcpy(tmp, a, size); memcpy(a, b, size); memcpy(b, tmp, size);})
 
-void heapsort(void *base, size_t num, size_t size,
-              int (*cmp)(const void *, const void *))
+void mergesort(void *base, size_t num, size_t size,
+               int (*cmp)(const void *, const void *))
 {
 
 }

@@ -24,38 +24,58 @@
  * Compilers are smart enough to replace memcpy with move calls
  * if the data fits into a register.
  */
-#define swap(a, b, size) ({char tmp[size]; memcpy(tmp, a, size); memcpy(a, b, size); memcpy(b, tmp, size);})
+#define SWAP(a, b, size) ({char tmp[size]; memcpy(tmp, a, size); memcpy(a, b, size); memcpy(b, tmp, size);})
 
-/* for heapsort we use a heap which is implemented as an array.
- * the left child, right child and parent indeces in one based arrays are computed
- * this way:
- * left(i) = 2i
- * right(i) = 2i+1
- * parent(i) = i/2
- * Because in C we use zero based arrays we must slightly modfiy these formulas to:
- * left(i) = 2i+1
- * right(i) = 2i+2
- * parent(i) = (i+1)/2
- */
-
-static int left(int i)
+static void swap(void *base, int i, int j, size_t size)
 {
-    return 2 * i + 1;
+    size_t a = (size_t)base + i * size;
+    size_t b = (size_t)base + j * size;
+    SWAP((void*)a, (void*)b, size);
 }
 
-static int right(int i)
+static int greater(void *base, int i, int j, size_t size, int (*cmp)(const void *, const void *))
 {
-    return 2 * i + 2;
+    size_t a = (size_t)base + i * size;
+    size_t b = (size_t)base + j * size;
+    return (cmp((void*)a, (void*)b) > 0);
 }
 
-static int parent(int i)
+static void reheap(void *base, int i, int k, size_t size, int (*cmp)(const void *, const void *))
 {
-    return (i + 1) / 2;
+    int j = i;
+    int son;
+
+    do {
+        if (2 * j > k) {
+            break;
+        } else {
+            if (2 * j + 1 <= k) {
+                if (greater(base, 2*j-1, 2*j, size, cmp))
+                    son = 2 * j;
+                else
+                    son = 2 * j + 1;
+            } else {
+                son = 2 * j;
+            }
+        }
+        if (greater(base, son-1, j-1, size, cmp) ) {
+            swap(base, j-1, son-1, size);
+            j = son;
+        } else {
+            break;
+        }
+    } while (1);
 }
 
 void heapsort(void *base, size_t num, size_t size,
               int (*cmp)(const void *, const void *))
 {
+    int i;
 
+    for (i = num / 2; i >= 1; i--) reheap(base, i, num, size, cmp);
+    for (i = num; i >= 2; i--) {
+        swap(base, 0, i-1, size);
+        reheap(base, 1, i-1, size, cmp);
+    }
 }
 
