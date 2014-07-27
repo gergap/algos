@@ -18,11 +18,13 @@
  */
 #include <testlib.h>
 #include <malloc.h>
+#include <string.h>
 #include <sort/quicksort.h>
 
 void test_quicksort(void);
 void test_1million(void);
 void register_tests(void);
+void test(void);
 
 static int compare_int(const void *a, const void *b)
 {
@@ -64,9 +66,24 @@ void test_1million(void)
     free(data);
 }
 
+void test(void)
+{
+    char data[20] = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
+    char tmp;
+
+    tmp = data[0];
+    memmove(data, data+1, 19);
+    data[19] = tmp;
+
+    memmove(data+1, data, 19);
+    data[0] = tmp;
+
+}
+
 void register_tests(void)
 {
     UREGISTER_NAME("sort/quicksort");
+    UREGISTER_TEST(test);
     UREGISTER_TEST(test_quicksort);
     UREGISTER_TEST(test_1million);
 }
