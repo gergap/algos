@@ -28,7 +28,7 @@
 
 /* for heapsort we use a heap which is implemented as an array.
  * the left child, right child and parent indeces in one based arrays are computed
- * this way.
+ * this way:
  * left(i) = 2i
  * right(i) = 2i+1
  * parent(i) = i/2
