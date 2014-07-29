@@ -9,4 +9,5 @@ include_directories(../testlib)
 set(TEST_LIBS sort)
 add_unit_test(quicksort quicksort.c)
 add_unit_test(heapsort heapsort.c)
+add_unit_test(radixsort radixsort.c)
 
